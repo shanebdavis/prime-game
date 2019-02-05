@@ -3,18 +3,62 @@ import &StandardImport
 class CurrentGame extends ApplicationState
   @stateFields
     winningNumber: 101
-    playerEmojis:
-      1: :🙂
-      2: :🥶
+    players:
+      1: emoji: :🙂 pawnIds: :a :b
+      2: emoji: :🐵 pawnIds: :c :d
 
-    playerNumbers:
-      1: 53 10
-      2: 52 34
+    playerIds: :1 :2
 
-    currentPlayerId: 1
+    pawns:
+      a: number: 1 emoji: :🙂
+      b: number: 1 emoji: :☺️
+      c: number: 1 emoji: :🙈
+      d: number: 1 emoji: :🐵
+
+    currentPlayerId: :1
     currentRoll: 5 10
+    winner: null
+
+  resetGame: -> @resetState()
 
   roll: ->
     @currentRoll =
       1 + intRand 10
       1 + intRand 10
+
+  play: (playPawnId, playNumber, rollNumber)->
+    @pawns = object pawnProps, pawnId in @pawns
+      pawnProps extract number
+      merge pawnProps,
+        number:
+          if pawnId == playPawnId
+            playNumber
+          else if number == playNumber
+            1
+          else
+            number
+
+    if playNumber == 101
+      pawnsLeft = null
+      playerId = null
+      @players = newPlayers = object player, pId in @players
+        if playPawnId in player.pawnIds
+          playerId = pId
+          merge
+            player
+            pawnIds: pawnsLeft = arrayWithoutValue player.pawnIds, playPawnId
+        else player
+
+      if pawnsLeft.length == 0
+        log winnerFound: {} playerId, pawnsLeft, newPlayers
+        @winner = playerId
+
+    index = @playerIds.indexOf @currentPlayerId
+    if @currentRoll.length == 2
+      @currentRoll = [] if @currentRoll[0] == rollNumber
+        @currentRoll[1]
+      else
+        @currentRoll[0]
+    else
+      @currentPlayerId = @playerIds[(index + 1) % @playerIds.length]
+      @roll()

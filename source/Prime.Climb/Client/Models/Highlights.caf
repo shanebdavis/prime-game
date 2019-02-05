@@ -1,0 +1,7 @@
+import &StandardImport
+
+class Highlights extends ApplicationState
+  @stateFields
+    highlightedNumber:    null
+    justHighlightNumber:  null
+    highlightedPawnId:    null

@@ -3,18 +3,23 @@ import &StandardImport, global.Number
 tileCenter = point tileSize / 2
 
 class Number extends FluxComponent
+  @subscriptions
+    :highlights.highlightedNumber
+    :highlights.justHighlightNumber
 
   preprocessProps: (prop) ->
     prop extract number
     merge prop, factors: primeFactorization number
 
   render: ->
+    @ extract highlightedNumber, justHighlightNumber
+
     @props extract
-      hoverNumber
       number
       factors
       selected
-      text
+      emoji
+      noHighlight
     numFactors = factors.length
     factorSpacing = 1
     unless isPrime = numFactors == 1 && number != 1
@@ -38,35 +43,36 @@ class Number extends FluxComponent
       size:     tileSize
       padding:  mainPadding
       on:
-        mouseIn:  -> @props?.setHoverNumber? number
-        mouseOut: -> @props?.clearHoverNumber?()
+        mouseIn:  !noHighlight && -> @models.highlights.setHighlightedNumber number
+        mouseOut: !noHighlight && -> @models.highlights.clearHighlightedNumber()
         pointerClick: @props.click
 
       draw:
         :circle
-        if selected
-          padding: factorSize / 4
-          outline: :black
-        else if hoverNumber > 1 && number > 1
-          switch
-          when hoverNumber == number
+        unless noHighlight
+          if selected || justHighlightNumber == number
             padding: factorSize / 4
-            outline: #aaa
-          when isFactorOf number, hoverNumber
-            padding: factorSize / 4
-            fill:
-              if color
-                color.withAlpha .5
-              else #ddd
-          else if isFactorOf hoverNumber, number
-            padding: factorSize / 4
-            outline:
-              color:
-                if hoverNumber in primes
-                  getPrimeColor hoverNumber
-                else #ccc
+            outline: :black
+          else if highlightedNumber > 1 && number > 1
+            switch
+            when highlightedNumber == number
+              padding: factorSize / 4
+              outline: #aaa
+            when isFactorOf number, highlightedNumber
+              padding: factorSize / 4
+              fill:
+                if color
+                  color.withAlpha .5
+                else #ddd
+            else if isFactorOf highlightedNumber, number
+              padding: factorSize / 4
+              outline:
+                color:
+                  if highlightedNumber in primes
+                    getPrimeColor highlightedNumber
+                  else #ccc
 
-              lineWidth: 2
+                lineWidth: 2
         padding: mainPadding + factorSize / 2
         color ? #eee
 
@@ -107,18 +113,7 @@ class Number extends FluxComponent
           color:      :white
           text:       lastFactor
 
-      if present text
+      if emoji
         Element
-          :topRight
-          size: 30
-          draw:
-            :circle
-            :black
-          TextElement
-            :textCenterCenter
-            fontSize: 24
-            fontFamily: :arial
-            layoutMode: :tight
-            text: text
-            color: :white
-
+          padding: -mainPadding
+          &Pawn {} emoji

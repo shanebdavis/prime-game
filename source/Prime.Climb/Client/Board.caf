@@ -13,28 +13,41 @@ getBoardLocation = (number) ->
 
 class Board extends FluxComponent
   @subscriptions
-    :currentGame.winningNumber
-    :currentGame.playerNumbers
+    :currentGame.currentGame
 
   @stateFields
     hoverNumber: null
 
   render: ->
-    @props extract endNumber
+    @currentGame extract
+      winningNumber
+      players
+      pawns
+      emojis
+
+    pawnLocations = []
 
     Element
-      size:
+      size: log
         w: tileSize * 10
-        h: Math.ceil tileSize * endNumber / 10
+        h: tileSize * Math.ceil winningNumber / 10
 
       :flow
-      array number from 1 to @winningNumber
+      array number from 1 to winningNumber
         &Number {}
-          number, @setHoverNumber, @clearHoverNumber
-          @hoverNumber
+          number
 
-      array numbers, playerId in @playerNumbers
-        array number in numbers
+      array {pawnIds}, playerId in players
+        array pawnId in pawnIds
+          pawnCount++
+          location = getBoardLocation pawns[pawnId].number
+          while find loc in pawnLocations when loc.eq location
+            location.x -= 10
+          pawnLocations.push location
           &Pawn {}
-            playerId
-            location: getBoardLocation number
+            key: pawnId
+            pawnId
+            location
+
+
+

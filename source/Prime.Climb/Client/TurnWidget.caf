@@ -11,64 +11,105 @@ class TurnWidget extends FluxComponent
   @stateFields
     selectedNumber: 0
     selectedPawnNumber: 0
+    selectedPawnId: null
 
   render: ->
     @currentGame extract
       currentRoll
-      playerNumbers
+      players
+      pawns
       currentPlayerId
       winningNumber
 
-    currentPlayerNumbers =
-      playerNumbers[currentPlayerId]
-      .sort numberSort
-    log {}
-      @selectedNumber
-      @selectedPawnNumber
-      winningNumber
+    currentPlayerPawns =
+      object pawnId in players[currentPlayerId].pawnIds
+        pawns[pawnId]
+
+    moves = compactFlatten
+      array {number:moveFromNumber, emoji}, pawnId in currentPlayerPawns
+        array rollNumber in currentRoll
+          []
+            {} pawnId, emoji, moveFromNumber, rollNumber, operator: :+ moveToNumber: moveFromNumber + rollNumber
+            {} pawnId, emoji, moveFromNumber, rollNumber, operator: :- moveToNumber: moveFromNumber - rollNumber
+            {} pawnId, emoji, moveFromNumber, rollNumber, operator: :x moveToNumber: moveFromNumber * rollNumber
+            {} pawnId, emoji, moveFromNumber, rollNumber, operator: :/ moveToNumber: moveFromNumber / rollNumber
+
+    moves = array move in moves when
+      {moveFromNumber, moveToNumber} = move
+      moveFromNumber != moveToNumber
+      && moveToNumber >= 1
+      && moveToNumber <= winningNumber
+      && Number.isInteger moveToNumber
 
     Element
-      size: tileSize * 4
+      :childrenSize
       :column
-      Element
-        :childrenSize
-        :row
-        array number in currentRoll.sort numberSort
-          &Number {}
-            number
-            click: -> @selectedNumber = number
-            selected: @selectedNumber == number
 
-      Element
-        :childrenSize
-        :row
-        array number in currentPlayerNumbers
-          &Number {}
-            number
-            click: -> @selectedPawnNumber = number
-            selected: @selectedPawnNumber == number
+      array {pawnId, emoji, moveFromNumber, moveToNumber, rollNumber, operator} in moves
 
-        &Pawn
-          playerId: currentPlayerId
-
-        &Pawn
-          playerId: currentPlayerId
-          location: x: tileSize
-
-      if @selectedNumber > 0 && @selectedPawnNumber > 0
-        numbers = log
-          +: @selectedPawnNumber + @selectedNumber
-          -: @selectedPawnNumber - @selectedNumber
-          x: @selectedPawnNumber * @selectedNumber
-          "/": @selectedPawnNumber / @selectedNumber
         Element
           :childrenSize
           :row
-          array number, operator in numbers when
-              number >= 1
-              && number <= winningNumber
-              && Number.isInteger number
+          :childrenCenterCenter
+          :pointerCursor
 
-            &Number {}
-              number
+          on:
+            pointerClick: ->
+              @models.highlights.highlightedPawnId = null
+              @models.highlights.justHighlightNumber = null
+              @models.currentGame.play
+                pawnId
+                moveToNumber
+                rollNumber
+
+            mouseIn: ->
+              @models.highlights.highlightedPawnId = pawnId
+              @models.highlights.justHighlightNumber = moveToNumber
+
+            mouseOut: ->
+              @models.highlights.highlightedPawnId = null
+              @models.highlights.justHighlightNumber = null
+
+          &Number
+            number: moveFromNumber
+            emoji:  emoji
+            noHighlight: true
+
+          Element
+            :topRight
+            size: 30
+            draw:
+              :circle
+              :black
+            TextElement
+              :textCenterCenter
+              fontSize: 24
+              fontFamily: :arial
+              layoutMode: :tight
               text: operator
+              color: :white
+
+          &Number
+            number: rollNumber
+            noHighlight: true
+
+
+          Element
+            :topRight
+            size: 30
+            draw:
+              :circle
+              if moveToNumber < moveFromNumber then #a00 else :black
+            TextElement
+              :textCenterCenter
+              fontSize: 24
+              fontFamily: :arial
+              layoutMode: :tight
+              text: :=
+              color: :white
+
+          &Number
+            number: moveToNumber
+            noHighlight: true
+
+

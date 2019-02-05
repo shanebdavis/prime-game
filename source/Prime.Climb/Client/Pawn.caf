@@ -2,17 +2,27 @@ import &StandardImport, &Constants
 
 class Pawn extends FluxComponent
   @subscriptions
-    :currentGame.playerEmojis
+    :currentGame.pawns
+    :highlights.highlightedPawnId
 
   render: ->
-    @props extract location, playerId
-    emoji = @playerEmojis[playerId]
+    @props extract location, emoji, pawnId
 
-    TextElement
+    emoji ?= @pawns[pawnId]?.emoji
+
+    Element
       :childrenSize
+      draw: if @highlightedPawnId == pawnId
+        []
+          :circle
+          padding: -10
+          fill: :white
+          {} outline: :black
+
       inFlow:false
       axis: :centerCenter
       animators:
+        scale: toFrom: 0
         location:
           d: 2
           f: :easeInBounce
@@ -23,7 +33,9 @@ class Pawn extends FluxComponent
           x:  tileSize * 5/6
           y:  tileSize * 1/6
 
-      layoutMode: :tight
-      fontSize:   48
-      text:       emoji
+      TextElement
+        :childrenSize
 
+        layoutMode: :tight
+        fontSize:   48
+        text:       emoji
