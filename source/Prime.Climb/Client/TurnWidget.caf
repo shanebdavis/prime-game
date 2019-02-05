@@ -1,0 +1,74 @@
+import &StandardImport
+
+numberSort = (a, b) ->
+  a - 0
+  - b - 0
+
+class TurnWidget extends FluxComponent
+  @subscriptions
+    :currentGame.currentGame
+
+  @stateFields
+    selectedNumber: 0
+    selectedPawnNumber: 0
+
+  render: ->
+    @currentGame extract
+      currentRoll
+      playerNumbers
+      currentPlayerId
+      winningNumber
+
+    currentPlayerNumbers =
+      playerNumbers[currentPlayerId]
+      .sort numberSort
+    log {}
+      @selectedNumber
+      @selectedPawnNumber
+      winningNumber
+
+    Element
+      size: tileSize * 4
+      :column
+      Element
+        :childrenSize
+        :row
+        array number in currentRoll.sort numberSort
+          &Number {}
+            number
+            click: -> @selectedNumber = number
+            selected: @selectedNumber == number
+
+      Element
+        :childrenSize
+        :row
+        array number in currentPlayerNumbers
+          &Number {}
+            number
+            click: -> @selectedPawnNumber = number
+            selected: @selectedPawnNumber == number
+
+        &Pawn
+          playerId: currentPlayerId
+
+        &Pawn
+          playerId: currentPlayerId
+          location: x: tileSize
+
+      if @selectedNumber > 0 && @selectedPawnNumber > 0
+        numbers = log
+          +: @selectedPawnNumber + @selectedNumber
+          -: @selectedPawnNumber - @selectedNumber
+          x: @selectedPawnNumber * @selectedNumber
+          "/": @selectedPawnNumber / @selectedNumber
+        Element
+          :childrenSize
+          :row
+          array number, operator in numbers when
+              number >= 1
+              && number <= winningNumber
+              && Number.isInteger number
+
+            &Number {}
+              number
+              text: operator

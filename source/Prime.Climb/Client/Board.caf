@@ -1,0 +1,40 @@
+import &StandardImport
+
+getBoardLocation = (number) ->
+  number--
+  x = number % 10
+  y =
+    number - x
+    / 10
+
+  point
+    x * tileSize
+    y * tileSize
+
+class Board extends FluxComponent
+  @subscriptions
+    :currentGame.winningNumber
+    :currentGame.playerNumbers
+
+  @stateFields
+    hoverNumber: null
+
+  render: ->
+    @props extract endNumber
+
+    Element
+      size:
+        w: tileSize * 10
+        h: Math.ceil tileSize * endNumber / 10
+
+      :flow
+      array number from 1 to @winningNumber
+        &Number {}
+          number, @setHoverNumber, @clearHoverNumber
+          @hoverNumber
+
+      array numbers, playerId in @playerNumbers
+        array number in numbers
+          &Pawn {}
+            playerId
+            location: getBoardLocation number

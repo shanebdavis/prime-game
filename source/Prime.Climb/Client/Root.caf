@@ -1,0 +1,31 @@
+import &StandardImport, &Constants
+
+class Root extends FluxComponent
+
+  @stateFields
+    hoverNumber: null
+
+  render: ->
+    Element
+      draw: :white
+      padding: 10
+      :row
+      childrenMargins: 10
+
+      Element
+        :childrenSize
+        draw:
+          radius: 10
+          outline: #ddd
+
+        &Board {}
+          endNumber: 110
+          @setHoverNumber, @clearHoverNumber
+          @hoverNumber
+
+      Element
+        :childrenSize
+        draw:
+          radius: 10
+          outline: #ddd
+        &TurnWidget()

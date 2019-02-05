@@ -1,0 +1,19 @@
+import &ArtSuite, &Constants, global.Number
+
+primeFactorization: primeFactorization = (n, out = []) ->
+  switch
+  when n <= 1 then out.push n
+  when n in primes
+    out.push n
+  else
+    find prime in primes when isInteger n / prime
+      out.push prime
+      primeFactorization n / prime, out
+  out
+
+getPrimeColor: (n) ->
+  primeColors[n] ? primeColors.default
+
+isFactorOf: (factor, ofThis) ->
+  factor != ofThis
+  && isInteger ofThis / factor

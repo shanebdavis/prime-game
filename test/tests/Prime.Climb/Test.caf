@@ -1,0 +1,3 @@
+import &StandardImport
+suite: ->
+  test 'Climb' -> assert.eq 1, 1

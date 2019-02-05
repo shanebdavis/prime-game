@@ -1,0 +1,20 @@
+import &StandardImport
+
+class CurrentGame extends ApplicationState
+  @stateFields
+    winningNumber: 101
+    playerEmojis:
+      1: :🙂
+      2: :🥶
+
+    playerNumbers:
+      1: 53 10
+      2: 52 34
+
+    currentPlayerId: 1
+    currentRoll: 5 10
+
+  roll: ->
+    @currentRoll =
+      1 + intRand 10
+      1 + intRand 10

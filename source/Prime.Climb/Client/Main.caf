@@ -1,0 +1,11 @@
+import &StandardImport
+
+&Models
+&ArtSuiteApp.initArtSuiteClient
+  title:         :Prime.Climb
+  MainComponent:
+    class CanvasComponent extends Component
+
+      render: ->
+        CanvasElement
+          &Root()

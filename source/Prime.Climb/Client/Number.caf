@@ -1,0 +1,124 @@
+import &StandardImport, global.Number
+
+tileCenter = point tileSize / 2
+
+class Number extends FluxComponent
+
+  preprocessProps: (prop) ->
+    prop extract number
+    merge prop, factors: primeFactorization number
+
+  render: ->
+    @props extract
+      hoverNumber
+      number
+      factors
+      selected
+      text
+    numFactors = factors.length
+    factorSpacing = 1
+    unless isPrime = numFactors == 1 && number != 1
+      [firstFactor] = factors
+      unless find factor in factors when factor != firstFactor
+        allSame = true
+
+    color =
+      if isPrime
+        getPrimeColor number
+      else if allSame
+        getPrimeColor firstFactor
+
+
+    mainPadding = 15
+    bold = isPrime || allSame
+    player = switch number
+    when 50 then :🥵
+    when 19 then :🥶
+    Element
+      size:     tileSize
+      padding:  mainPadding
+      on:
+        mouseIn:  -> @props?.setHoverNumber? number
+        mouseOut: -> @props?.clearHoverNumber?()
+        pointerClick: @props.click
+
+      draw:
+        :circle
+        if selected
+          padding: factorSize / 4
+          outline: :black
+        else if hoverNumber > 1 && number > 1
+          switch
+          when hoverNumber == number
+            padding: factorSize / 4
+            outline: #aaa
+          when isFactorOf number, hoverNumber
+            padding: factorSize / 4
+            fill:
+              if color
+                color.withAlpha .5
+              else #ddd
+          else if isFactorOf hoverNumber, number
+            padding: factorSize / 4
+            outline:
+              color:
+                if hoverNumber in primes
+                  getPrimeColor hoverNumber
+                else #ccc
+
+              lineWidth: 2
+        padding: mainPadding + factorSize / 2
+        color ? #eee
+
+        array factor, i in factors by 1
+          circle: rect
+            center:
+              tileCenter
+              .add point
+                angle:
+                  Math.PI * 2
+                  * (numFactors - i - 1) / numFactors
+                  - Math.PI / 2
+                magnitude:
+                  tileSize / 2
+                  - factorSize / 2
+                  - mainPadding
+
+            size: factorSize
+          fill:      getPrimeColor factor
+
+      TextElement
+        :textCenterCenter
+        fontSize:   if bold then 24 else 18
+        fontFamily: :arial
+        fontWeight: :bold
+        color: if bold then #fffe else #aaa
+        text: number
+
+      if !isPrime && (lastFactor = peek factors) > 10
+        TextElement
+          :childrenSize
+          :centerCenter
+          layoutMode: :tight
+          location:   xw:.5 y: factorSize / 2
+          fontFamily: :arial
+          fontSize:   10
+          fontWeight: :bold
+          color:      :white
+          text:       lastFactor
+
+      if present text
+        Element
+          :topRight
+          size: 30
+          draw:
+            :circle
+            :black
+          TextElement
+            :textCenterCenter
+            fontSize: 24
+            fontFamily: :arial
+            layoutMode: :tight
+            text: text
+            color: :white
+
