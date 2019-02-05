@@ -37,17 +37,16 @@ class Board extends FluxComponent
         &Number {}
           number
 
-      array {pawnIds}, playerId in players
-        array pawnId in pawnIds
-          pawnCount++
-          location = getBoardLocation pawns[pawnId].number
-          while find loc in pawnLocations when loc.eq location
-            location.x -= 10
-          pawnLocations.push location
-          &Pawn {}
-            key: pawnId
-            pawnId
-            location
+      array {number}, pawnId in pawns
+        pawnCount++
+        location = getBoardLocation number
+        while find loc in pawnLocations when loc.eq location
+          location.x -= 10
+        pawnLocations.push location
+        &Pawn {}
+          key: pawnId
+          pawnId
+          location
 
 
 

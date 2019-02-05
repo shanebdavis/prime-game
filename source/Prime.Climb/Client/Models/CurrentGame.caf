@@ -33,12 +33,12 @@ class CurrentGame extends ApplicationState
         number:
           if pawnId == playPawnId
             playNumber
-          else if number == playNumber
+          else if number == playNumber && number != @winningNumber
             1
           else
             number
 
-    if playNumber == 101
+    if playNumber == @winningNumber
       pawnsLeft = null
       playerId = null
       @players = newPlayers = object player, pId in @players

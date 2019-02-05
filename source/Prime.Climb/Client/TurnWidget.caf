@@ -4,6 +4,12 @@ numberSort = (a, b) ->
   a - 0
   - b - 0
 
+##
+  break-out-by-pawn
+  sort-by-final-number
+  show-pawn-only-once
+  show-potential-bumps
+
 class TurnWidget extends FluxComponent
   @subscriptions
     :currentGame.currentGame
@@ -27,17 +33,19 @@ class TurnWidget extends FluxComponent
 
     moves = compactFlatten
       array {number:moveFromNumber, emoji}, pawnId in currentPlayerPawns
-        array rollNumber in currentRoll
+        compactFlatten array rollNumber in currentRoll
           []
             {} pawnId, emoji, moveFromNumber, rollNumber, operator: :+ moveToNumber: moveFromNumber + rollNumber
             {} pawnId, emoji, moveFromNumber, rollNumber, operator: :- moveToNumber: moveFromNumber - rollNumber
             {} pawnId, emoji, moveFromNumber, rollNumber, operator: :x moveToNumber: moveFromNumber * rollNumber
             {} pawnId, emoji, moveFromNumber, rollNumber, operator: :/ moveToNumber: moveFromNumber / rollNumber
+        .sort (a, b) ->
+          b.moveToNumber - a.moveToNumber
 
     moves = array move in moves when
       {moveFromNumber, moveToNumber} = move
       moveFromNumber != moveToNumber
-      && moveToNumber >= 1
+      && moveToNumber > 1
       && moveToNumber <= winningNumber
       && Number.isInteger moveToNumber
 
@@ -52,6 +60,13 @@ class TurnWidget extends FluxComponent
           :row
           :childrenCenterCenter
           :pointerCursor
+          draw: if moveToNumber < moveFromNumber
+            padding: 10
+            radius: 1000
+            fill: #f002
+            outline:
+              lineWidth: 2
+              color: #f00
 
           on:
             pointerClick: ->
@@ -99,7 +114,7 @@ class TurnWidget extends FluxComponent
             size: 30
             draw:
               :circle
-              if moveToNumber < moveFromNumber then #a00 else :black
+              :black
             TextElement
               :textCenterCenter
               fontSize: 24
@@ -111,5 +126,8 @@ class TurnWidget extends FluxComponent
           &Number
             number: moveToNumber
             noHighlight: true
+            emoji: if moveToNumber < 101
+              find {number, emoji} in pawns when number == moveToNumber
+                emoji
 
 
