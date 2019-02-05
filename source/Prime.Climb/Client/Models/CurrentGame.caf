@@ -1,19 +1,27 @@
 import &StandardImport
 
+##
+  🥶
+  🥵
+  🙂
+  ☺️
+  🙈
+  🐵
+
 class CurrentGame extends ApplicationState
   @stateFields
     winningNumber: 101
     players:
-      1: emoji: :🙂 pawnIds: :a :b
-      2: emoji: :🐵 pawnIds: :c :d
+      1: emoji: :🐟 pawnIds: :a :b
+      2: emoji: :🦎 pawnIds: :c :d
 
     playerIds: :1 :2
 
     pawns:
-      a: number: 1 emoji: :🙂
-      b: number: 1 emoji: :☺️
-      c: number: 1 emoji: :🙈
-      d: number: 1 emoji: :🐵
+      a: number: 1 emoji: :🐟
+      b: number: 1 emoji: :🐳
+      c: number: 1 emoji: :🦎
+      d: number: 1 emoji: :🐢
 
     currentPlayerId: :1
     currentRoll: 5 10

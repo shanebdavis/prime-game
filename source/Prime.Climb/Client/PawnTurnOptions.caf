@@ -1,0 +1,56 @@
+import &StandardImport
+
+##
+  break-out-by-pawn
+  sort-by-final-number
+  show-pawn-only-once
+  show-potential-bumps
+
+moveIsLegal = (winningNumber, {moveFromNumber, moveToNumber}) ->
+  moveFromNumber != moveToNumber
+  && moveToNumber > 1
+  && moveToNumber <= winningNumber
+  && Number.isInteger moveToNumber
+
+class PawnTurnOptions extends FluxComponent
+  @subscriptions
+    :currentGame.currentGame
+
+  render: ->
+    @currentGame extract
+      currentRoll
+      pawns
+      winningNumber
+
+    @props extract pawnId
+
+    pawns[pawnId] extract
+      number as moveFromNumber
+      emoji
+
+    moves =
+      compactFlatten array rollNumber in currentRoll
+        []
+          {} pawnId, emoji, moveFromNumber, rollNumber, operator: :+ moveToNumber: moveFromNumber + rollNumber
+          {} pawnId, emoji, moveFromNumber, rollNumber, operator: :- moveToNumber: moveFromNumber - rollNumber
+          {} pawnId, emoji, moveFromNumber, rollNumber, operator: :x moveToNumber: moveFromNumber * rollNumber
+          {} pawnId, emoji, moveFromNumber, rollNumber, operator: :/ moveToNumber: moveFromNumber / rollNumber
+      .sort (a, b) ->
+        b.moveToNumber - a.moveToNumber
+
+    Element
+      :childrenSize
+      :childrenCenterCenter
+      :column
+
+      TextElement
+        :textCenterCenter
+        size: 128
+        padding: 16
+
+        layoutMode: :tight
+        fontSize:   96
+        text:       emoji
+
+      array move in moves when moveIsLegal winningNumber, move
+        &TurnOption move

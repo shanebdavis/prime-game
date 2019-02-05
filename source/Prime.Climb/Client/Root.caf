@@ -1,13 +1,18 @@
 import &StandardImport, &Constants
 
 class Root extends FluxComponent
-  @subscriptions :currentGame.winner
+  @subscriptions :currentGame.currentGame
 
   @stateFields
     hoverNumber: null
 
   render: ->
-    @ extract winner
+    @currentGame extract
+      winner
+      currentPlayerId
+      players
+      pawns
+
     Element
       draw: :white
       padding: 10
@@ -25,12 +30,20 @@ class Root extends FluxComponent
           @setHoverNumber, @clearHoverNumber
           @hoverNumber
 
-      Element
-        :childrenSize
-        draw:
-          radius: 10
-          outline: #ddd
-        &TurnWidget()
+      # Element
+      #   :childrenSize
+      #   draw:
+      #     radius: 10
+      #     outline: #ddd
+      #   &TurnWidget()
+
+      array pawnId in players[currentPlayerId].pawnIds
+        Element
+          :childrenSize
+          draw:
+            radius: 10
+            outline: #ddd
+          &PawnTurnOptions {} pawnId
 
       if winner
         Element

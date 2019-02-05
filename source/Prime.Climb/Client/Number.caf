@@ -76,22 +76,23 @@ class Number extends FluxComponent
         padding: mainPadding + factorSize / 2
         color ? #eee
 
-        array factor, i in factors by 1
-          circle: rect
-            center:
-              tileCenter
-              .add point
-                angle:
-                  Math.PI * 2
-                  * (numFactors - i - 1) / numFactors
-                  - Math.PI / 2
-                magnitude:
-                  tileSize / 2
-                  - factorSize / 2
-                  - mainPadding
+        if number > 1
+          array factor, i in factors by 1
+            circle: rect
+              center:
+                tileCenter
+                .add point
+                  angle:
+                    Math.PI * 2
+                    * (numFactors - i - 1) / numFactors
+                    - Math.PI / 2
+                  magnitude:
+                    tileSize / 2
+                    - factorSize / 2
+                    - mainPadding
 
-            size: factorSize
-          fill:      getPrimeColor factor
+              size: factorSize
+            fill:      getPrimeColor factor
 
       TextElement
         :textCenterCenter

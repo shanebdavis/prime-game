@@ -20,6 +20,7 @@ class Pawn extends FluxComponent
           {} outline: :black
 
       inFlow:false
+
       axis: :centerCenter
       animators:
         scale: toFrom: 0
@@ -34,8 +35,8 @@ class Pawn extends FluxComponent
           y:  tileSize * 1/6
 
       TextElement
-        :childrenSize
-
+        :childrenCenterCenter
+        size: 48
         layoutMode: :tight
         fontSize:   48
         text:       emoji

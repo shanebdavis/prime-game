@@ -1,0 +1,106 @@
+import &StandardImport
+
+class TurnOption extends FluxComponent
+  @subscriptions
+    :currentGame.currentGame
+
+  @stateFields
+    hover: false
+
+  render: ->
+    @props extract
+      pawnId, emoji, moveFromNumber
+      moveToNumber, rollNumber, operator
+
+    Element
+      :childrenSize
+      :row
+      :childrenCenterCenter
+      :pointerCursor
+      draw:
+        padding: 10
+        radius: 1000
+        fill:
+          if moveToNumber < moveFromNumber
+            #f002
+          else
+            #0d02
+
+        if @hover
+          outline:
+            lineWidth: 2
+            color:
+              if moveToNumber < moveFromNumber
+                #f00
+              else
+                #0d0
+
+      on:
+        pointerClick: ->
+          @models.highlights.highlightedPawnId = null
+          @models.highlights.justHighlightNumber = null
+          log {}
+            pawnId
+            moveToNumber
+            rollNumber
+
+          @models.currentGame.play
+            pawnId
+            moveToNumber
+            rollNumber
+
+        mouseIn: ->
+          @models.highlights.highlightedPawnId = pawnId
+          @models.highlights.justHighlightNumber = moveToNumber
+          @hover = true
+
+        mouseOut: ->
+          @models.highlights.highlightedPawnId = null
+          @models.highlights.justHighlightNumber = null
+          @hover = false
+
+      &Number
+        number: moveFromNumber
+        noHighlight: true
+
+      Element
+        :topRight
+        size: 30
+        draw:
+          :circle
+          :black
+        TextElement
+          :textCenterCenter
+          fontSize: 24
+          fontFamily: :arial
+          layoutMode: :tight
+          text: operator
+          color: :white
+
+      &Number
+        number: rollNumber
+        noHighlight: true
+
+
+      Element
+        :topRight
+        size: 30
+        draw:
+          :circle
+          :black
+        TextElement
+          :textCenterCenter
+          fontSize: 24
+          fontFamily: :arial
+          layoutMode: :tight
+          text: :=
+          color: :white
+
+      &Number
+        number: moveToNumber
+        noHighlight: true
+        emoji: if moveToNumber < 101
+          find {number, emoji} in @currentGame.pawns when number == moveToNumber
+            emoji
+
+
