@@ -1,0 +1,98 @@
+import &StandardImport
+
+center = point 5.5 * tileSize
+
+getBoardLocation = (number) ->
+  Math extract log2, floor, pow
+
+  magnitude = floor log2 number
+  angle =
+    Math.PI * 2 *
+      number - pow 2, magnitude
+      / pow 2, magnitude
+
+
+  center
+  .add point {}
+    magnitude: magnitude * tileSize
+    angle
+
+
+
+class Board2 extends FluxComponent
+  @subscriptions
+    :currentGame.currentGame
+
+  @stateFields
+    hoverNumber: null
+
+  render: ->
+    @currentGame extract
+      winningNumber
+      players
+      pawns
+      emojis
+
+    pawnLocations = []
+
+    Element
+      size: 11 * tileSize
+      draw:
+        shape: (context, area) ->
+          {x:cx, y:cy} = getBoardLocation 1
+          context.moveTo cx, cy
+          {x, y} = getBoardLocation 2
+          context.lineTo x, y
+          context.arc cx, cy, tileSize, 0, Math.PI
+
+          context.arc cx+tileSize/2, cy, tileSize*1.5, Math.PI, Math.PI * 2
+
+          # {x:x4, y:y4} = getBoardLocation 4
+          # # context.moveTo cx,cy-tileSize
+          # context.moveTo x4,y4
+
+          # each n from 5 to 63
+          #   {x, y} = getBoardLocation n
+          #   context.moveTo x, y
+
+
+          context.arc cx, cy, tileSize*2, 0, Math.PI * 3/2
+          {x:x7, y:y7} = getBoardLocation 7
+          {x:x8, y:y8} = getBoardLocation 8
+          context.moveTo
+            # x7 + tileSize * 1.5
+            # y7
+            # x8
+            # y8 - tileSize * 1.5
+            x8
+            y8
+
+          context.arc cx, cy, tileSize*3, 0, Math.PI * 7/4
+          {x, y} = getBoardLocation 16
+          context.moveTo x, y
+          context.arc cx, cy, tileSize*4, 0, Math.PI * 15/8
+          {x, y} = getBoardLocation 32
+          context.moveTo x, y
+          context.arc cx, cy, tileSize*5, 0, Math.PI * 31/16
+
+
+        outline: #ccc
+
+      array number from 1 to 63
+        &Number {}
+          number
+          centered: true
+          location = getBoardLocation number
+
+      # array {number}, pawnId in pawns
+      #   location = getBoardLocation number
+      #   while find loc in pawnLocations when loc.eq location
+      #     location.x -= 10
+      #   pawnLocations.push location
+      #   &Pawn {}
+      #     key: pawnId
+      #     pawnId
+      #     location
+
+
+

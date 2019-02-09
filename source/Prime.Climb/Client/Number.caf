@@ -20,6 +20,8 @@ class Number extends FluxComponent
       selected
       emoji
       noHighlight
+      location
+      centered
     numFactors = factors.length
     factorSpacing = 1
     unless isPrime = numFactors == 1 && number != 1
@@ -41,7 +43,9 @@ class Number extends FluxComponent
     when 19 then :🥶
     Element
       size:     tileSize
+      location: location
       padding:  mainPadding
+      axis: if centered then .5
       on:
         mouseIn:  !noHighlight && -> @models.highlights.setHighlightedNumber number
         mouseOut: !noHighlight && -> @models.highlights.clearHighlightedNumber()
@@ -54,25 +58,37 @@ class Number extends FluxComponent
             padding: factorSize / 4
             outline: :black
           else if highlightedNumber > 1 && number > 1
-            switch
-            when highlightedNumber == number
+            if highlightedNumber == number
               padding: factorSize / 4
               outline: #aaa
-            when isFactorOf number, highlightedNumber
-              padding: factorSize / 4
-              fill:
-                if color
-                  color.withAlpha .5
-                else #ddd
-            else if isFactorOf highlightedNumber, number
-              padding: factorSize / 4
-              outline:
-                color:
-                  if highlightedNumber in primes
-                    getPrimeColor highlightedNumber
-                  else #ccc
+            else
+              numberIsFactorOf = isFactorOf number, highlightedNumber
+              highlightedNumberIsFactorOf = isFactorOf highlightedNumber, number
+              if numberIsFactorOf || highlightedNumberIsFactorOf
+                numberFactors = primeFactorization(number)
+                highlightedNumberFactors = primeFactorization(highlightedNumber)
 
-                lineWidth: 2
+
+                n1 = number
+                n2 = highlightedNumber
+
+                if switch ratio = max(n1,n2) / min(n1,n2)
+                    when 2 3 5 7 then true
+
+                  padding: factorSize / 4
+                  fill:
+                    getPrimeColor ratio
+                    .withAlpha .5
+                # else
+                #   padding: factorSize / 4
+                #   outline:
+                #     color:
+                #       if highlightedNumber in primes
+                #         getPrimeColor highlightedNumber
+                #       else #ccc
+
+                #     lineWidth: 1
+
         padding: mainPadding + factorSize / 2
         color ? #eee
 

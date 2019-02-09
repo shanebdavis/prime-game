@@ -1,6 +1,8 @@
 import &ArtSuite, &Constants, global.Number
 
-primeFactorization: primeFactorization = (n, out = []) ->
+pfCache = []
+
+primeFactorizationR = (n, out = []) ->
   switch
   when n <= 1 then out.push n
   when n in primes
@@ -8,8 +10,11 @@ primeFactorization: primeFactorization = (n, out = []) ->
   else
     find prime in primes when isInteger n / prime
       out.push prime
-      primeFactorization n / prime, out
+      primeFactorizationR n / prime, out
   out
+
+primeFactorization: (n) ->
+  pfCache[n] ||= primeFactorizationR n
 
 getPrimeColor: (n) ->
   primeColors[n] ? primeColors.default
