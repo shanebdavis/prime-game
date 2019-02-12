@@ -8,4 +8,7 @@ import &StandardImport
 
       render: ->
         CanvasElement
-          &Game2()
+          if getEnv().game2
+            &Game2()
+          else
+            &Game()

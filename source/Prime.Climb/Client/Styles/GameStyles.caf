@@ -1,0 +1,15 @@
+class GameStyles extends &ArtReact.HotStyleProps
+
+  @boardSection:
+    padding: 10
+    draw:
+      radius: 10
+      outline: #ddd
+
+  @overlay:
+    draw:
+      fill:
+        color: :white
+        shadow: true
+      radius: 20
+      outline: #ddd

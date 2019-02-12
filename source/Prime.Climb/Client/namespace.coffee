@@ -2,4 +2,6 @@
 # file: Prime.Climb/Client/namespace.coffee
 
 module.exports = (require '../namespace').addNamespace('Client', class Client extends Neptune.PackageNamespace)
-require './Models/namespace'
+require './Components/namespace';
+require './Models/namespace';
+require './Styles/namespace'

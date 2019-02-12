@@ -79,7 +79,10 @@ class Number extends FluxComponent
                   fill:
                     getPrimeColor ratio
                     .withAlpha .5
-                # else
+                else
+                  padding: factorSize / 4
+                  fill:
+                    #0001
                 #   padding: factorSize / 4
                 #   outline:
                 #     color:

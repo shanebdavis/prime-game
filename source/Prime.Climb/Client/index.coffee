@@ -16,4 +16,6 @@ module.exports
   PawnTurnOptions: require './PawnTurnOptions'
   StandardImport:  require './StandardImport' 
   TurnOption:      require './TurnOption'     
+require './Components'
 require './Models'
+require './Styles'

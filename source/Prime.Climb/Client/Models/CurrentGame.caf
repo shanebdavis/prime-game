@@ -27,6 +27,12 @@ class CurrentGame extends ApplicationState
     currentRoll: 5 10
     winner: null
 
+  @getter
+    currentPlayer:      -> @players[@currentPlayerId]
+    currentPlayerEmoji: ->
+      if @ extract? currentPlayer
+        @pawns[currentPlayer.pawnIds[0]].emoji
+
   resetGame: -> @resetState()
 
   roll: ->

@@ -24,33 +24,46 @@ class PawnTurnOptions extends FluxComponent
 
     @props extract pawnId
 
-    pawns[pawnId] extract
-      number as moveFromNumber
-      emoji
+    if pawnId
+      pawns[pawnId] extract
+        number as moveFromNumber
+        emoji
 
-    moves =
-      compactFlatten array rollNumber in currentRoll
-        []
-          {} pawnId, emoji, moveFromNumber, rollNumber, operator: :+ moveToNumber: moveFromNumber + rollNumber
-          {} pawnId, emoji, moveFromNumber, rollNumber, operator: :- moveToNumber: moveFromNumber - rollNumber
-          {} pawnId, emoji, moveFromNumber, rollNumber, operator: :x moveToNumber: moveFromNumber * rollNumber
-          {} pawnId, emoji, moveFromNumber, rollNumber, operator: :/ moveToNumber: moveFromNumber / rollNumber
-      .sort (a, b) ->
-        b.moveToNumber - a.moveToNumber
+      moves =
+        compactFlatten array rollNumber in currentRoll
+          []
+            {} pawnId, emoji, moveFromNumber, rollNumber, operator: :+ moveToNumber: moveFromNumber + rollNumber
+            {} pawnId, emoji, moveFromNumber, rollNumber, operator: :- moveToNumber: moveFromNumber - rollNumber
+            {} pawnId, emoji, moveFromNumber, rollNumber, operator: :x moveToNumber: moveFromNumber * rollNumber
+            {} pawnId, emoji, moveFromNumber, rollNumber, operator: :/ moveToNumber: moveFromNumber / rollNumber
+        .sort (a, b) ->
+          b.moveToNumber - a.moveToNumber
 
     Element
-      :childrenSize
-      :childrenCenterCenter
+      size: w: 400, h: 20 + tileSize * 9
+      :childrenTopCenter
       :column
 
-      TextElement
-        :textCenterCenter
-        size: 128
-        padding: 16
+      pawnId && Element
+        :row
+        :childrenSize
+        :childrenCenterCenter
 
-        layoutMode: :tight
-        fontSize:   96
-        text:       emoji
+        Element
+          size: tileSize
+          Element
+            :centerCenter
+            :childrenSize
+            scale: 1.25
+            &Number number: moveFromNumber
+        TextElement
+          :textCenterCenter
+          size: 128
+          padding: 16
+
+          layoutMode: :tight
+          fontSize:   96
+          text:       emoji
 
       array move in moves when moveIsLegal winningNumber, move
         &TurnOption move

@@ -14,7 +14,7 @@ class Game2 extends FluxComponent
       pawns
 
     Element
-      draw: :white
+      draw: :black
       padding: 10
       :row
       childrenMargins: 10

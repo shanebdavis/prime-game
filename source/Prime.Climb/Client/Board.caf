@@ -1,11 +1,13 @@
 import &StandardImport
 
+numColumns = 10
+
 getBoardLocation = (number) ->
   number--
-  x = number % 10
+  x = number % numColumns
   y =
     number - x
-    / 10
+    / numColumns
 
   point
     x * tileSize
@@ -29,13 +31,14 @@ class Board extends FluxComponent
 
     Element
       size: log
-        w: tileSize * 10
-        h: tileSize * Math.ceil winningNumber / 10
+        w: tileSize * numColumns
+        h: tileSize * Math.ceil winningNumber / numColumns
+      scale:(ps, cs) -> ps.minRatio cs
 
-      :flow
       array number from 1 to winningNumber
         &Number {}
           number
+          location: getBoardLocation number
 
       array {number}, pawnId in pawns
         location = getBoardLocation number

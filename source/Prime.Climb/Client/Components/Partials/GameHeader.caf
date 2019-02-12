@@ -1,0 +1,60 @@
+import &StandardImport
+
+class GameHeader extends FluxComponent
+  @subscriptions :currentGame.currentGame
+
+  render: ->
+    Element
+      size: ww: 1, h: 120
+      :row
+      :childrenCenterCenter
+      GameStyles.boardSection
+      childrenMargins: 20
+      Element
+        :childrenWidthParentHeight
+        :column
+        :childrenCenterCenter
+        childrenMargins: 10
+
+        TextElement
+          :childrenSize
+          TextStyles.medium
+          fontSize: 48
+          text: "" Get to 101!
+
+      Element
+        size: w: 1
+        draw: #ddd
+
+
+      Element
+        :row
+        :childrenCenterRight
+
+        Element
+          :parentWidthChildrenHeight
+          :row
+          :childrenCenterCenter
+          TextElement
+            :childrenSize
+            TextStyles.medium
+            text: "player: "
+
+          TextElement
+            :childrenSize
+            fontSize: 96
+            text: @models.currentGame.currentPlayerEmoji
+
+        Element
+          :parentWidthChildrenHeight
+          :row
+          :childrenCenterCenter
+          TextElement
+            TextStyles.medium
+            :childrenSize
+            text: "roll:"
+
+          array r in @currentGame.currentRoll
+            &Number
+              number: r
+              location: 0
