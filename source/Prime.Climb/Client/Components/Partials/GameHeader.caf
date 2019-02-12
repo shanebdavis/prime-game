@@ -17,8 +17,8 @@ class GameHeader extends FluxComponent
         childrenMargins: 10
 
         TextElement
-          :childrenSize
           TextStyles.medium
+          :childrenSize
           fontSize: 48
           text: "" Get to 101!
 
@@ -36,8 +36,8 @@ class GameHeader extends FluxComponent
           :row
           :childrenCenterCenter
           TextElement
-            :childrenSize
             TextStyles.medium
+            :childrenSize
             text: "player: "
 
           TextElement

@@ -1,5 +1,6 @@
 class TextStyles extends &ArtReact.HotStyleProps
   @medium:
+    size:       :parentWidthChildrenHeight
     fontFamily: :arial
     fontSize:   24
     color:      #0007

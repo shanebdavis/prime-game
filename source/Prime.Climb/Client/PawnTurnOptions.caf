@@ -56,6 +56,7 @@ class PawnTurnOptions extends FluxComponent
             :childrenSize
             scale: 1.25
             &Number number: moveFromNumber
+
         TextElement
           :textCenterCenter
           size: 128
@@ -64,6 +65,12 @@ class PawnTurnOptions extends FluxComponent
           layoutMode: :tight
           fontSize:   96
           text:       emoji
+
+      pawnId && TextElement
+        TextStyles.medium
+        :textCenterCenter
+        padding: v: 10
+        text: "select +, -, *, or / to move"
 
       array move in moves when moveIsLegal winningNumber, move
         &TurnOption move
