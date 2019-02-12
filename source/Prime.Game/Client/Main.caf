@@ -2,7 +2,7 @@ import &StandardImport
 
 &Models
 &ArtSuiteApp.initArtSuiteClient
-  title:         :Prime.Climb
+  title:         :Prime.Game
   MainComponent:
     class CanvasComponent extends Component
 

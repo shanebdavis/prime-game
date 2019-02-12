@@ -1,9 +1,3 @@
-# Prime.Climb
+# Prime.Game
 
-> Initialized by Art.Build.Configurator
-
-### Install
-
-```coffeescript
-npm install prime-climb
-```
+A game that teaches prime factorization.

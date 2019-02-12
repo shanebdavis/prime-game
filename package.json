@@ -6,7 +6,7 @@
   },
   "description": "Prime.Climb",
   "license": "ISC",
-  "name": "prime-climb",
+  "name": "prime-game",
   "scripts": {
     "build": "webpack --progress",
     "start": "webpack-dev-server --hot --inline --progress",
