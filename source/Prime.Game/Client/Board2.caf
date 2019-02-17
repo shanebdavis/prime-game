@@ -44,52 +44,51 @@ class Board2 extends FluxComponent
       :childrenSize
       scale: .75
       draw:
-        shape: (context, area) ->
-          {x:cx, y:cy} = getBoardLocation 1
-          context.moveTo cx, cy
-          each n from 2 to lastNumber by 1
-            {x, y} = getBoardLocation n
-            switch n
-            when 3 then context.lineTo center.x, center.y + tileSize * 1.1
-            when 4 then context.lineTo center.x, center.y - tileSize * 1.33
 
-            context.lineTo x, y
-          # {x, y} = getBoardLocation 2
-          # context.lineTo x, y
-          # context.arc cx, cy, tileSize, 0, Math.PI
+        array factor in 3 5 7 2
+          color = primeColors[factor]
+          shape: (context, area) ->
+            {x:cx, y:cy} = getBoardLocation 1
+            context.moveTo cx, cy
+            each n from factor to lastNumber / factor by 1
+              l = getBoardLocation n
+              if factor * n <= lastNumber
+                l2 = getBoardLocation factor * n
+                context.moveTo l.x, l.y
+                context.lineTo l2.x, l2.y
 
-          # context.arc cx+tileSize/2, cy, tileSize*1.5, Math.PI, Math.PI * 2
+              context.lineTo x, y
 
-          # # {x:x4, y:y4} = getBoardLocation 4
-          # # # context.moveTo cx,cy-tileSize
-          # # context.moveTo x4,y4
+          outline:
+            switch factor
+            when 3
+              lineWidth: 3.33
+              color: color.withAlpha .33
+            when 2
+              lineWidth: 10
+              color: color
+            when 5
+              lineWidth: 6.66
+              color: color.withAlpha .66
+            when 7
+              lineWidth: 10
+              color: color
 
-          # # each n from 5 to 63
-          # #   {x, y} = getBoardLocation n
-          # #   context.moveTo x, y
+        {}
+          shape: (context, area) ->
+            {x:cx, y:cy} = getBoardLocation 1
+            context.moveTo cx, cy
+            each n from 2 to lastNumber by 1
+              {x, y} = getBoardLocation n
+              switch n
+              when 3 then context.lineTo center.x, center.y + tileSize * 1.1
+              when 4 then context.lineTo center.x, center.y - tileSize * 1.33
 
+              context.lineTo x, y
 
-          # context.arc cx, cy, tileSize*2, 0, Math.PI * 3/2
-          # {x:x7, y:y7} = getBoardLocation 7
-          # {x:x8, y:y8} = getBoardLocation 8
-          # context.moveTo
-          #   # x7 + tileSize * 1.5
-          #   # y7
-          #   # x8
-          #   # y8 - tileSize * 1.5
-          #   x8
-          #   y8
-
-          # context.arc cx, cy, tileSize*3, 0, Math.PI * 7/4
-          # {x, y} = getBoardLocation 16
-          # context.moveTo x, y
-          # context.arc cx, cy, tileSize*4, 0, Math.PI * 15/8
-          # {x, y} = getBoardLocation 32
-          # context.moveTo x, y
-          # context.arc cx, cy, tileSize*5, 0, Math.PI * 31/16
-
-
-        outline: #7
+          outline:
+            lineWidth: 10
+            color: #7
 
       array number from 1 to lastNumber by 1
         &Number {}

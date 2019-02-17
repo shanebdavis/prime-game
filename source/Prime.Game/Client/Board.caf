@@ -9,7 +9,7 @@ getBoardLocation = (number) ->
     number - x
     / numColumns
 
-  point
+  new Point
     x * tileSize
     y * tileSize
 
