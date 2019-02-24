@@ -44,35 +44,35 @@ class Board2 extends FluxComponent
       :childrenSize
       scale: .75
       draw:
+        child: :background
 
         array factor in 3 5 7 2
           color = primeColors[factor]
           shape: (context, area) ->
             {x:cx, y:cy} = getBoardLocation 1
             context.moveTo cx, cy
-            each n from factor to lastNumber / factor by 1
+            each n from 2 to lastNumber / factor by 1
               l = getBoardLocation n
-              if factor * n <= lastNumber
-                l2 = getBoardLocation factor * n
-                context.moveTo l.x, l.y
-                context.lineTo l2.x, l2.y
-
-              context.lineTo x, y
+              l2 = getBoardLocation factor * n
+              context.moveTo l.x, l.y
+              context.lineTo l2.x, l2.y
 
           outline:
             switch factor
-            when 3
-              lineWidth: 3.33
+            when 3, 5, 7
+              compositeMode: :add
+              lineWidth: factor
               color: color.withAlpha .33
             when 2
-              lineWidth: 10
+              compositeMode: :add
+              lineWidth: 8
               color: color
-            when 5
-              lineWidth: 6.66
-              color: color.withAlpha .66
-            when 7
-              lineWidth: 10
-              color: color
+            # when 5
+            #   lineWidth: 6.66
+            #   color: color.withAlpha .66
+            # when 7
+            #   lineWidth: 10
+            #   color: color
 
         {}
           shape: (context, area) ->
@@ -87,13 +87,19 @@ class Board2 extends FluxComponent
               context.lineTo x, y
 
           outline:
+            compositeMode: :add
             lineWidth: 10
-            color: #7
+            color: #3
+
+      BitmapElement
+        key: :background
+        source: :/assets/NGC6814_hubble_3970.jpg
 
       array number from 1 to lastNumber by 1
         &Number {}
           number
           centered: true
+          game2: true
           location = getBoardLocation number
 
       # array {number}, pawnId in pawns

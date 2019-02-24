@@ -23,6 +23,8 @@ class Game2 extends FluxComponent
         :childrenSize
         draw:
           radius: 10
+          :clip
+          :children
           outline: #ddd
 
         &Board2 {}

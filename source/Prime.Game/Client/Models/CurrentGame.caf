@@ -31,7 +31,7 @@ class CurrentGame extends ApplicationState
     currentPlayer:      -> @players[@currentPlayerId]
     currentPlayerEmoji: ->
       if @ extract? currentPlayer
-        @pawns[currentPlayer.pawnIds[0]].emoji
+        @pawns[currentPlayer.pawnIds[0]]?.emoji
 
   resetGame: -> @resetState()
 

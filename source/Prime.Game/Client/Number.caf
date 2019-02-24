@@ -42,7 +42,11 @@ class Number extends FluxComponent
     when 50 then :🥵
     when 19 then :🥶
     Element
-      size:     tileSize
+      size:
+        if @props.game2 && number == 1
+          tileSize * 1.5
+        else
+          tileSize
       location: location
       padding:  mainPadding
       axis: if centered then .5
@@ -60,11 +64,20 @@ class Number extends FluxComponent
           else if highlightedNumber > 1 && number > 1
             if highlightedNumber == number
               padding: factorSize / 4
-              outline: #aaa
+              outline:
+                if @props.game2
+                  color: #fff
+                  lineWidth: 10
+                else
+                  #aaa
             else
               numberIsFactorOf = isFactorOf number, highlightedNumber
               highlightedNumberIsFactorOf = isFactorOf highlightedNumber, number
-              if numberIsFactorOf || highlightedNumberIsFactorOf
+              if numberIsFactorOf || highlightedNumberIsFactorOf ||
+                  isOffByOne = @props.game2 &&
+                    number == highlightedNumber - 1
+                    || number == highlightedNumber + 1
+
                 numberFactors = primeFactorization(number)
                 highlightedNumberFactors = primeFactorization(highlightedNumber)
 
@@ -82,7 +95,10 @@ class Number extends FluxComponent
                 else
                   padding: factorSize / 4
                   fill:
-                    #0001
+                    if isOffByOne
+                      #fff7
+                    else
+                      #0001
                 #   padding: factorSize / 4
                 #   outline:
                 #     color:
@@ -93,7 +109,18 @@ class Number extends FluxComponent
                 #     lineWidth: 1
 
         padding: mainPadding + factorSize / 2
-        color ? #eee
+        if @props.game2
+          fill:
+            color:
+              if number == 1 then :black else color ? #eee
+            shadow:
+              offset: 0
+              blur: 20
+              color: :black
+          outline: if number == 1
+            #07f
+        else
+          color ? #eee
 
         if number > 1
           array factor, i in factors by 1
