@@ -1,5 +1,7 @@
 import &StandardImport, global.Number
 
+GameStyle extract tileSize, getPrimeColor, factorSize
+
 tileCenter = point tileSize / 2
 
 class Number extends FluxComponent
@@ -34,7 +36,6 @@ class Number extends FluxComponent
         getPrimeColor number
       else if allSame
         getPrimeColor firstFactor
-
 
     mainPadding = 15
     bold = isPrime || allSame

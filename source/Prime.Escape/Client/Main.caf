@@ -1,0 +1,11 @@
+import &StandardImport, &Components
+
+&Models
+&ArtSuiteApp.initArtSuiteClient
+  title:         :Prime.Game
+  MainComponent:
+    class CanvasComponent extends Component
+
+      render: ->
+        CanvasElement
+          Game()

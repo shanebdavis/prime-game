@@ -1,0 +1,33 @@
+##
+  movment:
+    1:    + of - 1
+    2:    * or / 2
+    3:    * or / 3
+    5:    * or / 5
+    7:    * or / 7
+
+  IDEA: for 2-7 movement, you can optionaly, also, move-1
+[]
+  fuel: 0   movement: 7
+  fuel: 0   movement: 5
+  fuel: 0   movement: 3
+
+  fuel: 0   movement: 3
+  fuel: 0   movement: 2
+  fuel: 0   movement: 2
+
+  fuel: 0   movement: 2
+  fuel: 0   movement: 1
+  fuel: 0   movement: 1
+
+  fuel: 0   movement: 1
+  fuel: 0   movement: 1
+  fuel: 0   movement: 1
+
+  fuel: 0   movement: 0
+  fuel: 1   movement: 0
+  fuel: 1   movement: 0
+
+  fuel: 1   movement: 0
+  fuel: 2   movement: 0
+  fuel: 3   movement: 0

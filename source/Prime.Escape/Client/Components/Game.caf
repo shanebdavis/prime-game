@@ -1,0 +1,25 @@
+import &StandardImport, &Constants
+
+class Game extends FluxComponent
+
+  @stateFields
+    hoverNumber: null
+
+  render: ->
+    Element
+      draw:             :black
+      padding:          10
+      childrenMargins:  10
+      :row
+
+      Element
+        :childrenSize
+        draw:
+          radius: 10
+          :clip
+          :children
+          outline: #ddd
+
+        &Board {}
+          @setHoverNumber, @clearHoverNumber
+          @hoverNumber

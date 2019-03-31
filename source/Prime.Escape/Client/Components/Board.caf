@@ -1,5 +1,7 @@
 import &StandardImport
 
+GameStyle extract tileSize
+
 center = point 6.5 * tileSize
 
 getBoardLocation = (number) ->
@@ -20,7 +22,7 @@ getBoardLocation = (number) ->
       * tileSize
     angle
 
-class Board2 extends FluxComponent
+class Board extends FluxComponent
   @subscriptions
     :currentGame.currentGame
 
@@ -45,7 +47,7 @@ class Board2 extends FluxComponent
         child: :background
 
         array factor in [] 2
-          color = primeColors[factor]
+          color = GameStyle.primeColors[factor]
           shape: (context, area) ->
             {x:cx, y:cy} = getBoardLocation 1
             context.moveTo cx, cy
@@ -66,12 +68,6 @@ class Board2 extends FluxComponent
               compositeMode:  :add
               lineWidth:      8
               color:          color
-            # when 5
-            #   lineWidth: 6.66
-            #   color: color.withAlpha .66
-            # when 7
-            #   lineWidth: 10
-            #   color: color
 
         {}
           shape: (context, area) ->
@@ -100,16 +96,3 @@ class Board2 extends FluxComponent
           centered: true
           game2:    true
           location = getBoardLocation number
-
-      # array {number}, pawnId in pawns
-      #   location = getBoardLocation number
-      #   while find loc in pawnLocations when loc.eq location
-      #     location.x -= 10
-      #   pawnLocations.push location
-      #   &Pawn {}
-      #     key: pawnId
-      #     pawnId
-      #     location
-
-
-
