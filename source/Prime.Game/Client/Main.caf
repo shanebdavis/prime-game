@@ -5,10 +5,4 @@ import &StandardImport
   title:         :Prime.Game
   MainComponent:
     class CanvasComponent extends Component
-
-      render: ->
-        CanvasElement
-          if getEnv().game2
-            &Game2()
-          else
-            &Game()
+      render: -> CanvasElement &Game()

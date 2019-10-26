@@ -5,10 +5,8 @@
 
 .addModules({
   Board:           require('./Board'),
-  Board2:          require('./Board2'),
   Constants:       require('./Constants'),
   Game:            require('./Game'),
-  Game2:           require('./Game2'),
   Lib:             require('./Lib'),
   Main:            require('./Main'),
   Number:          require('./Number'),
