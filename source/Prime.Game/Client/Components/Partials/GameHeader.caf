@@ -20,7 +20,7 @@ class GameHeader extends FluxComponent
           TextStyles.medium
           :childrenSize
           fontSize: 48
-          text: "" Get to 101!
+          text: "" Get to #{@currentGame.winningNumber}!
 
       Element
         size: w: 1

@@ -1,27 +1,34 @@
 import &StandardImport
 
 ##
-  🥶
-  🥵
   🙂
   ☺️
-  🙈
-  🐵
+
+fish    = :🐟 :🐳
+lizards = :🦎 :🐢
+hotCold = :🥵 :🥶
+monkeys = :🐵 :🙈
+
+player1 = hotCold
+player2 = monkeys
 
 class CurrentGame extends ApplicationState
   @stateFields
-    winningNumber: 101
+    winningNumber:
+      getEnv().winningNumber ? 101
+      | 0
+
     players:
-      1: emoji: :🐟 pawnIds: :a :b
-      2: emoji: :🦎 pawnIds: :c :d
+      1: emoji: player1[0], pawnIds: :a :b
+      2: emoji: player2[0], pawnIds: :c :d
 
     playerIds: :1 :2
 
     pawns:
-      a: number: 1 emoji: :🐟
-      b: number: 1 emoji: :🐳
-      c: number: 1 emoji: :🦎
-      d: number: 1 emoji: :🐢
+      a: number: 1 emoji: player1[0]
+      b: number: 1 emoji: player1[1]
+      c: number: 1 emoji: player2[0]
+      d: number: 1 emoji: player2[1]
 
     currentPlayerId: :1
     currentRoll: 5 10

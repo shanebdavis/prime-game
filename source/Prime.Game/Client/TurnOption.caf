@@ -99,7 +99,7 @@ class TurnOption extends FluxComponent
       &Number
         number: moveToNumber
         noHighlight: true
-        emoji: if moveToNumber < 101
+        emoji: if moveToNumber < @currentGame.winningNumber
           find {number, emoji} in @currentGame.pawns when number == moveToNumber
             emoji
 

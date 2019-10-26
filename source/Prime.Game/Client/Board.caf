@@ -1,6 +1,8 @@
 import &StandardImport
 
-numColumns = 10
+numColumns =
+  getEnv().numColumns ? 10
+  | 0
 
 getBoardLocation = (number) ->
   number--
@@ -49,6 +51,7 @@ class Board extends FluxComponent
           key: pawnId
           pawnId
           location
+
 
 
 
