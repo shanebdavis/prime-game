@@ -2,11 +2,11 @@
   "author": "Shane Brinkman-Davis Delamore, Imikimi LLC",
   "bugs": "https:/github.com/shanebdavis/prime-game/issues",
   "dependencies": {
-    "art-build-configurator": "*",
-    "art-suite-clientApp": "git://github.com/imikimi/art-suite-clientApp"
+    "art-suite-app": "^1.0.2"
   },
   "description": "Prime.Climb",
   "devDependencies": {
+    "art-build-configurator": "^1.30.0",
     "art-testbench": "*",
     "case-sensitive-paths-webpack-plugin": "^2.2.0",
     "chai": "^4.2.0",
@@ -18,9 +18,9 @@
     "script-loader": "^0.7.2",
     "style-loader": "^1.0.0",
     "webpack": "^4.39.1",
-    "webpack-cli": "*",
-    "webpack-dev-server": "^3.7.2",
-    "webpack-merge": "^4.2.1",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.8.0",
     "webpack-node-externals": "^1.7.2",
     "webpack-stylish": "^0.1.8"
   },
@@ -33,8 +33,8 @@
   },
   "scripts": {
     "build": "webpack --progress",
-    "start": "webpack-dev-server --hot --inline --progress --env.devServer",
-    "test": "webpack-dev-server  --progress --env.devServer"
+    "start": "webpack serve --hot --inline --progress --open",
+    "test": "webpack serve  --progress"
   },
   "version": "0.0.1"
 }

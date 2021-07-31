@@ -5,9 +5,7 @@ target:
       They just can't be used *directly* in the browser
   node: false
 
-npm:
-  description: "" Prime.Climb
-  dependencies: art-suite-clientApp: :git://github.com/imikimi/art-suite-clientApp
+package: -> &package
 
 webpack:
   # common properties are merged into each target's properties
